@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="module_untitled.main" default="compile.module.untitled.main">
+  <dirname property="module.untitled.main.basedir" file="${ant.file.module_untitled.main}"/>
+  
+  <property name="module.jdk.home.untitled.main" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.untitled.main" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.untitled.main" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.untitled.main" value="-encoding UTF-8 -source 8 -target 1.8 ${compiler.args}"/>
+  
+  <property name="untitled.main.output.dir" value="${module.untitled.main.basedir}/../../build/classes/java/main"/>
+  <property name="untitled.main.testoutput.dir" value="${module.untitled.main.basedir}/../../build/classes/java/main"/>
+  
+  <path id="untitled.main.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="untitled.main.module.production.classpath">
+    <path refid="${module.jdk.classpath.untitled.main}"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains:annotations:13.0.classpath"/>
+  </path>
+  
+  <path id="untitled.main.runtime.production.module.classpath">
+    <pathelement location="${untitled.main.output.dir}"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains:annotations:13.0.classpath"/>
+  </path>
+  
+  <path id="untitled.main.module.classpath">
+    <path refid="${module.jdk.classpath.untitled.main}"/>
+    <pathelement location="${untitled.main.output.dir}"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains:annotations:13.0.classpath"/>
+  </path>
+  
+  <path id="untitled.main.runtime.module.classpath">
+    <pathelement location="${untitled.main.output.dir}"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains.kotlin:kotlin-stdlib-common:1.3.41.classpath"/>
+    <path refid="library.gradle:_org.jetbrains:annotations:13.0.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.untitled.main">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.untitled.main">
+    <patternset refid="excluded.from.module.untitled.main"/>
+  </patternset>
+  
+  <path id="untitled.main.module.sourcepath">
+    <dirset dir="${module.untitled.main.basedir}/../../src/main">
+      <include name="java"/>
+      <include name="kotlin"/>
+      <include name="resources"/>
+    </dirset>
+  </path>
+  
+  
+  <target name="compile.module.untitled.main" depends="compile.module.untitled.main.production,compile.module.untitled.main.tests" description="Compile module untitled.main"/>
+  
+  <target name="compile.module.untitled.main.production" depends="register.custom.compilers" description="Compile module untitled.main; production classes">
+    <mkdir dir="${untitled.main.output.dir}"/>
+    <javac2 destdir="${untitled.main.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.untitled.main}/javac">
+      <compilerarg line="${compiler.args.untitled.main}"/>
+      <bootclasspath refid="untitled.main.module.bootclasspath"/>
+      <classpath refid="untitled.main.module.production.classpath"/>
+      <src refid="untitled.main.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.untitled.main"/>
+    </javac2>
+    
+    <copy todir="${untitled.main.output.dir}">
+      <fileset dir="${module.untitled.main.basedir}/../../src/main/java">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.untitled.main.basedir}/../../src/main/kotlin">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+      <fileset dir="${module.untitled.main.basedir}/../../src/main/resources">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.untitled.main.tests" depends="register.custom.compilers,compile.module.untitled.main.production" description="compile module untitled.main; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.untitled.main" description="cleanup module">
+    <delete dir="${untitled.main.output.dir}"/>
+    <delete dir="${untitled.main.testoutput.dir}"/>
+  </target>
+</project>
