@@ -2,13 +2,19 @@ import kotlin.system.exitProcess
 
 const val BOARD_HEIGHT = 5
 const val BOARD_WIDTH = 5
+const val EXIT_MESSAGE = "To exit program, type EXIT"
+const val REPORT_MESSAGE = "To report current robot position, type REPORT"
+const val MOVE_MESSAGE = "Move your robot with the following command MOVE, LEFT, RIGHT"
+const val INVALID_COMMAND_MESSAGE = "Invalid command!"
+const val INVALID_POSITION_MESSAGE = "Invalid robot position. Place again!"
+const val INITIAL_PLACE_MESSAGE = "Place initial robot position. For example: PLACE 0,0,NORTH:"
 
 fun main() {
 
     var robot: Robot? = null
 
     while (true) {
-        println("Place initial robot position. For example: PLACE 0,0,NORTH:")
+        println(INITIAL_PLACE_MESSAGE)
         val input = readLine()
         if (input?.matches(Regex("^PLACE\\s[0-9],[0-9],(NORTH|SOUTH|EAST|WEST)")) == true) {
             try {
@@ -17,18 +23,23 @@ fun main() {
                 }
                 break
             } catch (e: InvalidPositionException) {
-                println("Invalid robot position. Place again!")
+                println(INVALID_POSITION_MESSAGE)
+                println(EXIT_MESSAGE)
             }
         } else {
-            println("Invalid place command!")
+            println(INVALID_COMMAND_MESSAGE)
+            println(EXIT_MESSAGE)
+            if (readLine() == "EXIT") {
+                exitProcess(0)
+            }
         }
     }
 
     while (true) {
         println("-_-_-_-_-_-_-_-")
-        println("Move your robot with the following command MOVE, LEFT, RIGHT")
-        println("To report current robot position, type REPORT")
-        println("To exit program, type EXIT")
+        println(MOVE_MESSAGE)
+        println(REPORT_MESSAGE)
+        println(EXIT_MESSAGE)
 
         when (readLine()) {
             "EXIT" -> exitProcess(0)
@@ -37,7 +48,7 @@ fun main() {
             "RIGHT" -> robot?.turnRight()
             "REPORT" -> println(robot?.report())
             else -> {
-                println("Invalid command!")
+                println(INVALID_COMMAND_MESSAGE)
             }
         }
     }
