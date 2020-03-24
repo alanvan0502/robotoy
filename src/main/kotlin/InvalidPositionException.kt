@@ -1,0 +1,1 @@
+class InvalidPositionException: Throwable()
